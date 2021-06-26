@@ -1,0 +1,18 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Title: {{ bookinstance.book.title }}</h1>
+  <div style="margin-left:20px;margin-top:20px">
+        <p class="{% if bookinstance.status == 'a' %}text-success{% elif bookinstance.status == 'm' %}text-danger{% else %}text-warning{% endif %}">
+          {{ bookinstance.get_status_display }}
+        </p>
+        {% if bookinstance.status != 'a' %}
+          <p><strong>Due to be returned:</strong> {{ bookinstance.due_back }}</p>
+        {% endif %}
+        <p><strong>Imprint:</strong> {{ bookinstance.imprint }}</p>
+        <p class="text-muted"><strong>Id:</strong> {{ bookinstance.id }}</p>
+  </div>
+  {% if perms.myapp.can_mark_returned %}
+  <a href="{% url 'book-instance-update' bookinstance.pk %}" class="text-warning">Update Book Instance</a>  <a href="{% url 'book-instance-delete' bookinstance.pk %}" class="text-danger">Delete Book instance</a>
+  {% endif %}
+{% endblock %}
